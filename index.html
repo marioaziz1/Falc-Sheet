@@ -1031,7 +1031,7 @@ html.falcfit-act-pending body { overflow: hidden; }
 
   /* ─── Call Google Apps Script ────────────────────────────────────── */
   function callAPI(action, params, onSuccess, onError) {
-    if (!GAS_URL || GAS_URL === 'https://script.google.com/macros/s/AKfycbxMerm2-yqOAE9H9xLNWiSaEfeaFxgUVyWflaavDMXq2TBzt3jN4lLuzSHtsPxBJPi-/exec') {
+    if (!GAS_URL || GAS_URL.indexOf('script.google.com/macros/s/') === -1 || GAS_URL.indexOf('PASTE_YOUR') !== -1 || GAS_URL.indexOf('YOUR_ACTUAL_ID') !== -1) {
       onError('Activation service not configured. Contact support.');
       return;
     }
@@ -1044,7 +1044,11 @@ html.falcfit-act-pending body { overflow: hidden; }
     var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
     var timer = controller ? setTimeout(function () { controller.abort(); }, 12000) : null;
 
-    fetch(url.toString(), controller ? { signal: controller.signal } : {})
+    fetch(url.toString(), {
+      method: 'GET',
+      redirect: 'follow',
+      signal: controller ? controller.signal : undefined
+    })
       .then(function (resp) {
         clearTimeout(timer);
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
