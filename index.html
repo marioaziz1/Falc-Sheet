@@ -989,7 +989,7 @@ html.falcfit-act-pending body { overflow: hidden; }
   'use strict';
 
   /* ─── CONFIG: Replace with your deployed Apps Script URL ─────────── */
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbzyyR0tKp9BHEYlHDLQnx35XcMw8lh1X5vRgP53Yq-ufXEIs0NbTxIrzip5X92Q52EK/exec';
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbxMerm2-yqOAE9H9xLNWiSaEfeaFxgUVyWflaavDMXq2TBzt3jN4lLuzSHtsPxBJPi-/exec';
 
   /* ─── Storage keys ───────────────────────────────────────────────── */
   var K = {
@@ -1031,7 +1031,7 @@ html.falcfit-act-pending body { overflow: hidden; }
 
   /* ─── Call Google Apps Script ────────────────────────────────────── */
   function callAPI(action, params, onSuccess, onError) {
-    if (!GAS_URL || GAS_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
+    if (!GAS_URL || GAS_URL === 'https://script.google.com/macros/s/AKfycbxMerm2-yqOAE9H9xLNWiSaEfeaFxgUVyWflaavDMXq2TBzt3jN4lLuzSHtsPxBJPi-/exec') {
       onError('Activation service not configured. Contact support.');
       return;
     }
