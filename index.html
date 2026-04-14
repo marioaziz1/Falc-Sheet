@@ -855,6 +855,36 @@ body {
 .meal-name { font-weight: 700; font-size: 14px; }
 .meal-macros { display: flex; gap: 8px; }
 
+/* ONBOARDING STEP INDICATOR */
+.ob-step {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.ob-step-active {
+  background: var(--gold);
+  color: #0a0d12;
+  box-shadow: 0 0 12px rgba(255,212,0,0.35);
+}
+.ob-step-inactive {
+  background: var(--bg-hover);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.ob-step-done {
+  background: rgba(255,212,0,0.2);
+  color: var(--gold);
+  border: 1px solid rgba(255,212,0,0.4);
+}
+.ob-step-line {
+  width: 32px; height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+}
+
 /* WATERMARK */
 .watermark-corner {
   position: fixed;
@@ -976,6 +1006,9 @@ html.falcfit-act-pending body { overflow: hidden; }
       <button type="submit">Activate</button>
     </form>
     <p id="falcfit-act-status" class="falcfit-act-foot">Checking license…</p>
+    <div style="margin-top:12px;text-align:center;">
+      <a href="https://wa.link/fakwyq" target="_blank" rel="noopener" style="font-size:12px;color:var(--text-muted);text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Need help? Contact us →</a>
+    </div>
   </div>
 </div>
 <script>
@@ -1223,6 +1256,7 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
       <div class="page-title" id="pageTitle">My Profile Setup</div>
     </div>
     <div class="topbar-right">
+      <a href="https://wa.link/fakwyq" target="_blank" rel="noopener" style="font-size:12px;color:var(--text-muted);text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:6px;transition:all 0.2s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='rgba(255,212,0,0.3)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">💬 Support</a>
       <span class="brand-badge">© FALCFIT</span>
       <div class="client-avatar" id="clientAvatar">👤</div>
     </div>
@@ -1232,162 +1266,223 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
   <div class="section active" id="sec-onboarding">
     <div class="onboarding-hero">
       <div class="onboarding-title">Welcome to FALCFIT</div>
-      <div class="onboarding-sub">Set up your branded coaching profile to start tracking, tools, meal plans, and workout days.</div>
+      <div class="onboarding-sub">Everything you need. One system. Your control.</div>
+      <div style="margin-top:12px;font-size:14px;color:var(--text-secondary);line-height:1.7;">Build your personal fitness system.<br>Track your progress. Stay consistent. Get results.</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--gold);opacity:0.75;letter-spacing:1px;font-style:italic;">Train smarter. Stay consistent. Become better.</div>
     </div>
 
-    <div class="grid-2">
-      <div class="card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
+      <div style="display:flex;gap:6px;align-items:center;">
+        <div class="ob-step ob-step-active" data-step="1">1</div>
+        <div class="ob-step-line"></div>
+        <div class="ob-step ob-step-inactive" data-step="2">2</div>
+        <div class="ob-step-line"></div>
+        <div class="ob-step ob-step-inactive" data-step="3">3</div>
+        <div class="ob-step-line"></div>
+        <div class="ob-step ob-step-inactive" data-step="4">4</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;" id="ob-step-label">Step 1 of 4 — Personal Info</div>
+    </div>
+
+    <!-- STEP 1: Personal Info -->
+    <div class="ob-panel" id="ob-panel-1">
+      <div class="card" style="border-color:rgba(255,212,0,0.2);">
         <div class="card-header">
-          <div class="card-title">My Profile</div>
-          <span class="card-badge badge-gold">Required</span>
+          <div>
+            <div class="card-title">👤 Personal Info</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Your basic details for accurate calculations</div>
+          </div>
+          <span class="card-badge badge-gold">Step 1</span>
         </div>
         <div class="grid-2">
           <div class="form-group">
             <label class="form-label">My Name</label>
-            <input class="form-input" type="text" id="clientName" placeholder="Example: Alex" oninput="updateClientName()">
+            <input class="form-input" type="text" id="clientName" placeholder="e.g. Alex" oninput="updateClientName()">
           </div>
           <div class="form-group">
             <label class="form-label">Age</label>
-            <input class="form-input" type="number" id="clientAge" placeholder="Example: 28" min="14" max="80">
+            <input class="form-input" type="number" id="clientAge" placeholder="e.g. 28" min="14" max="80">
           </div>
           <div class="form-group">
             <label class="form-label">Body Weight (kg)</label>
-            <input class="form-input" type="number" id="clientWeight" placeholder="Example: 75 kg" min="30" max="300">
+            <input class="form-input" type="number" id="clientWeight" placeholder="e.g. 75" min="30" max="300">
           </div>
           <div class="form-group">
             <label class="form-label">Height (cm)</label>
-            <input class="form-input" type="number" id="clientHeight" placeholder="Example: 175 cm" min="100" max="250">
+            <input class="form-input" type="number" id="clientHeight" placeholder="e.g. 175" min="100" max="250">
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Training Profile</div>
-          <span class="card-badge badge-teal">Setup</span>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Coaching Goal</label>
-          <select class="form-select" id="goal">
-            <option value="">— Select Goal —</option>
-            <option>Muscle Gain (Bulk)</option>
-            <option>Fat Loss (Cut)</option>
-            <option>Body Recomposition</option>
-            <option>Strength & Power</option>
-            <option>Athletic Performance</option>
-            <option>General Fitness</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Training Phase</label>
-          <select class="form-select" id="phase">
-            <option value="">— Select Phase —</option>
-            <option>Mesocycle 1 — Hypertrophy Base</option>
-            <option>Mesocycle 2 — Strength Focus</option>
-            <option>Mesocycle 3 — Intensification</option>
-            <option>Mesocycle 4 — Peak Week</option>
-            <option>Mesocycle 5 — Deload</option>
-            <option>Mesocycle 6 — Maintenance</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Activity Level</label>
-          <select class="form-select" id="activity">
-            <option value="">— Select Level —</option>
-            <option value="1.2">Sedentary (desk job, no exercise)</option>
-            <option value="1.375">Lightly Active (1–3 days/week)</option>
-            <option value="1.55">Moderately Active (3–5 days/week)</option>
-            <option value="1.725">Very Active (6–7 days/week)</option>
-            <option value="1.9">Extremely Active (athlete / 2x/day)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Experience Level</label>
-          <select class="form-select" id="experienceLevel">
-            <option>Beginner</option><option selected>Intermediate</option><option>Advanced</option><option>Elite</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Equipment Access</label>
-          <select class="form-select" id="equipmentAccess">
-            <option>Home Basic</option><option selected>Full Gym</option><option>Limited Machines</option><option>Bodyweight Only</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Recovery Status</label>
-          <select class="form-select" id="recoveryStatus">
-            <option>Low</option><option selected>Moderate</option><option>High</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Sleep Hours (Optional)</label>
-          <input class="form-input" type="number" id="sleepHours" placeholder="Example: 7.5 h" min="0" max="12" step="0.5">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nutrition Adherence (%)</label>
-          <input class="form-input" type="number" id="nutritionAdherence" placeholder="Example: 85%" min="0" max="100">
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Workout Preferences</div>
-          <span class="card-badge badge-blue">Customization</span>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Preferred Split</label>
-          <select class="form-select" id="preferredSplit" onchange="saveSplit()">
-            <option value="">— Select Split —</option>
-            <option>Push</option>
-            <option>Pull</option>
-            <option>Legs</option>
-            <option>Lower</option>
-            <option>Upper</option>
-            <option>Strength 5x5</option>
-            <option>Chest & Triceps</option>
-            <option>Back & Biceps</option>
-            <option>Shoulders</option>
-            <option>Arms</option>
-            <option>Full Body</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Days Per Week</label>
-          <select class="form-select" id="daysPerWeek">
-            <option>3</option><option>4</option><option selected>5</option>
-            <option>6</option><option>7</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Nutrition Preferences</div>
-          <span class="card-badge badge-green">Nutrition</span>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Meals Per Day</label>
-          <select class="form-select" id="mealsPerDay">
-            <option>2</option><option>3</option><option selected>4</option>
-            <option>5</option><option>6</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Dietary Preference</label>
-          <select class="form-select" id="dietPref">
-            <option>Standard (All Foods)</option>
-            <option>High Protein Focus</option>
-            <option>Low Carb</option>
-            <option>High Carb (Athletic)</option>
-          </select>
+        <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+          <button class="btn btn-primary" onclick="obNext(2)">Next: Fitness Setup →</button>
         </div>
       </div>
     </div>
 
-    <div style="text-align:center;margin-top:8px;">
-      <button class="btn btn-primary" style="padding:14px 40px;font-size:15px;" onclick="completeSetup()">
-        ✓ Save My Profile & Start My Session
-      </button>
+    <!-- STEP 2: Fitness Setup -->
+    <div class="ob-panel" id="ob-panel-2" style="display:none;">
+      <div class="card" style="border-color:rgba(255,212,0,0.2);">
+        <div class="card-header">
+          <div>
+            <div class="card-title">🏋️ Fitness Setup</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Define your goals and training profile</div>
+          </div>
+          <span class="card-badge badge-teal">Step 2</span>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">My Goal</label>
+            <select class="form-select" id="goal">
+              <option value="">— Select Goal —</option>
+              <option>Muscle Gain (Bulk)</option>
+              <option>Fat Loss (Cut)</option>
+              <option>Body Recomposition</option>
+              <option>Strength & Power</option>
+              <option>Athletic Performance</option>
+              <option>General Fitness</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Training Phase</label>
+            <select class="form-select" id="phase">
+              <option value="">— Select Phase —</option>
+              <option>Mesocycle 1 — Hypertrophy Base</option>
+              <option>Mesocycle 2 — Strength Focus</option>
+              <option>Mesocycle 3 — Intensification</option>
+              <option>Mesocycle 4 — Peak Week</option>
+              <option>Mesocycle 5 — Deload</option>
+              <option>Mesocycle 6 — Maintenance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Activity Level</label>
+            <select class="form-select" id="activity">
+              <option value="">— Select Level —</option>
+              <option value="1.2">Sedentary (no exercise)</option>
+              <option value="1.375">Lightly Active (1–3 days/week)</option>
+              <option value="1.55">Moderately Active (3–5 days/week)</option>
+              <option value="1.725">Very Active (6–7 days/week)</option>
+              <option value="1.9">Extremely Active (athlete / 2x/day)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Experience Level</label>
+            <select class="form-select" id="experienceLevel">
+              <option>Beginner</option><option selected>Intermediate</option><option>Advanced</option><option>Elite</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Equipment Access</label>
+            <select class="form-select" id="equipmentAccess">
+              <option>Home Basic</option><option selected>Full Gym</option><option>Limited Machines</option><option>Bodyweight Only</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Recovery Status</label>
+            <select class="form-select" id="recoveryStatus">
+              <option>Low</option><option selected>Moderate</option><option>High</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;">
+          <button class="btn btn-secondary" onclick="obNext(1)">← Back</button>
+          <button class="btn btn-primary" onclick="obNext(3)">Next: Workout Preferences →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Workout & Nutrition -->
+    <div class="ob-panel" id="ob-panel-3" style="display:none;">
+      <div class="grid-2">
+        <div class="card" style="border-color:rgba(255,212,0,0.2);">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🗓️ Workout Preferences</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Choose your split and training frequency</div>
+            </div>
+            <span class="card-badge badge-blue">Step 3</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Split</label>
+            <select class="form-select" id="preferredSplit" onchange="saveSplit()">
+              <option value="">— Select Split —</option>
+              <option>Push</option><option>Pull</option><option>Legs</option>
+              <option>Lower</option><option>Upper</option><option>Strength 5x5</option>
+              <option>Chest & Triceps</option><option>Back & Biceps</option>
+              <option>Shoulders</option><option>Arms</option><option>Full Body</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Days Per Week</label>
+            <select class="form-select" id="daysPerWeek">
+              <option>3</option><option>4</option><option selected>5</option>
+              <option>6</option><option>7</option>
+            </select>
+          </div>
+        </div>
+        <div class="card" style="border-color:rgba(255,212,0,0.2);">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🥗 Nutrition Setup</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Set your meal frequency and diet style</div>
+            </div>
+            <span class="card-badge badge-green">Step 3</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Meals Per Day</label>
+            <select class="form-select" id="mealsPerDay">
+              <option>2</option><option>3</option><option selected>4</option>
+              <option>5</option><option>6</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dietary Preference</label>
+            <select class="form-select" id="dietPref">
+              <option>Standard (All Foods)</option>
+              <option>High Protein Focus</option>
+              <option>Low Carb</option>
+              <option>High Carb (Athletic)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;">
+        <button class="btn btn-secondary" onclick="obNext(2)">← Back</button>
+        <button class="btn btn-primary" onclick="obNext(4)">Next: Final Review →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Final Review & Tracking Preferences -->
+    <div class="ob-panel" id="ob-panel-4" style="display:none;">
+      <div class="card" style="border-color:rgba(255,212,0,0.3);">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📊 Tracking Preferences & Final Review</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Optional details to improve your experience</div>
+          </div>
+          <span class="card-badge badge-gold">Step 4</span>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Sleep Hours (Optional)</label>
+            <input class="form-input" type="number" id="sleepHours" placeholder="e.g. 7.5 h" min="0" max="12" step="0.5">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nutrition Adherence (%)</label>
+            <input class="form-input" type="number" id="nutritionAdherence" placeholder="e.g. 85%" min="0" max="100">
+          </div>
+        </div>
+        <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin:12px 0;">
+          <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600;">Profile Summary</div>
+          <div id="ob-review-summary" style="font-size:13px;color:var(--text-secondary);line-height:1.9;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+          <button class="btn btn-secondary" onclick="obNext(3)">← Back</button>
+          <button class="btn btn-primary" style="padding:13px 36px;font-size:15px;" onclick="completeSetup()">
+            ✓ Save My Profile & Start
+          </button>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted);">Developed by C Mario Aziz</div>
     </div>
   </div>
 
@@ -3966,8 +4061,45 @@ function convertUnits() {
 }
 
 // ============================================================
-// INIT
+// ONBOARDING STEP NAVIGATOR
 // ============================================================
+function obNext(step) {
+  for (var i = 1; i <= 4; i++) {
+    var panel = document.getElementById('ob-panel-' + i);
+    if (panel) panel.style.display = (i === step) ? 'block' : 'none';
+    var dot = document.querySelector('.ob-step[data-step="' + i + '"]');
+    if (dot) {
+      dot.className = 'ob-step ' + (i === step ? 'ob-step-active' : (i < step ? 'ob-step-done' : 'ob-step-inactive'));
+    }
+  }
+  var labels = ['Personal Info', 'Fitness Setup', 'Workout & Nutrition', 'Final Review'];
+  var lbl = document.getElementById('ob-step-label');
+  if (lbl) lbl.textContent = 'Step ' + step + ' of 4 — ' + labels[step - 1];
+
+  // Populate review summary on step 4
+  if (step === 4) {
+    var name = (document.getElementById('clientName') && document.getElementById('clientName').value) || '—';
+    var age = (document.getElementById('clientAge') && document.getElementById('clientAge').value) || '—';
+    var weight = (document.getElementById('clientWeight') && document.getElementById('clientWeight').value) || '—';
+    var height = (document.getElementById('clientHeight') && document.getElementById('clientHeight').value) || '—';
+    var goal = (document.getElementById('goal') && document.getElementById('goal').value) || '—';
+    var split = (document.getElementById('preferredSplit') && document.getElementById('preferredSplit').value) || '—';
+    var days = (document.getElementById('daysPerWeek') && document.getElementById('daysPerWeek').value) || '—';
+    var meals = (document.getElementById('mealsPerDay') && document.getElementById('mealsPerDay').value) || '—';
+    var rev = document.getElementById('ob-review-summary');
+    if (rev) rev.innerHTML =
+      '<span style="color:var(--text-muted);">Name:</span> <strong>' + name + '</strong> &nbsp;|&nbsp; ' +
+      '<span style="color:var(--text-muted);">Age:</span> <strong>' + age + '</strong> &nbsp;|&nbsp; ' +
+      '<span style="color:var(--text-muted);">Weight:</span> <strong>' + weight + ' kg</strong> &nbsp;|&nbsp; ' +
+      '<span style="color:var(--text-muted);">Height:</span> <strong>' + height + ' cm</strong><br>' +
+      '<span style="color:var(--text-muted);">Goal:</span> <strong>' + goal + '</strong><br>' +
+      '<span style="color:var(--text-muted);">Split:</span> <strong>' + split + '</strong> &nbsp;|&nbsp; ' +
+      '<span style="color:var(--text-muted);">Days/Week:</span> <strong>' + days + '</strong> &nbsp;|&nbsp; ' +
+      '<span style="color:var(--text-muted);">Meals/Day:</span> <strong>' + meals + '</strong>';
+  }
+}
+
+
 document.addEventListener('DOMContentLoaded', async () => {
   if (CLEAN_START_ON_LOAD) {
     await resetAllStoredData();
