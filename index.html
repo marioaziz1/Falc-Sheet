@@ -979,77 +979,91 @@ html.falcfit-act-pending body { overflow: hidden; }
   </div>
 </div>
 <script>
+/* ═══════════════════════════════════════════════════════════════════════
+   FALCFIT — Google Sheets Activation System
+   ─────────────────────────────────────────────────────────────────────
+   ➤  Replace  PASTE_YOUR_WEB_APP_URL_HERE  with your deployed
+      Google Apps Script Web App URL before distributing this file.
+═══════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  /* ─── 50 Unique Offline Activation Codes (FIT-XXXX) ─────────────────── */
-  var VALID_CODES = [
-    'FIT-A9K2','FIT-M3P7','FIT-R6N1','FIT-Q8W4','FIT-J2T5',
-    'FIT-H7L0','FIT-C4V9','FIT-D1X3','FIT-B5Z6','FIT-F8Y2',
-    'FIT-G3U7','FIT-K9E4','FIT-N0S1','FIT-O6I8','FIT-P2H5',
-    'FIT-T4W3','FIT-V7Q9','FIT-W1M6','FIT-X8B0','FIT-Y5C2',
-    'FIT-Z3D4','FIT-A7F1','FIT-L6R8','FIT-U2J5','FIT-E9N3',
-    'FIT-S0K7','FIT-I4O2','FIT-AA3B','FIT-BB7C','FIT-CC1D',
-    'FIT-DD5E','FIT-EE9F','FIT-FF2G','FIT-GG6H','FIT-HH0I',
-    'FIT-II4J','FIT-JJ8K','FIT-KK3L','FIT-LL7M','FIT-MM1N',
-    'FIT-NN5O','FIT-OO9P','FIT-PP2Q','FIT-QQ6R','FIT-RR0S',
-    'FIT-SS4T','FIT-TT8U','FIT-UU3V','FIT-VV7W','FIT-WW1X'
-  ];
+  /* ─── CONFIG: Replace with your deployed Apps Script URL ─────────── */
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbzyyR0tKp9BHEYlHDLQnx35XcMw8lh1X5vRgP53Yq-ufXEIs0NbTxIrzip5X92Q52EK/exec';
 
-  /* ─── Storage Keys ───────────────────────────────────────────────────── */
+  /* ─── Storage keys ───────────────────────────────────────────────── */
   var K = {
-    installId : 'falcfit_install_id_v3',
-    code      : 'falcfit_act_code_v3',
-    signature : 'falcfit_act_sig_v3'
+    installId   : 'falcfit_install_id_v4',
+    code        : 'falcfit_act_code_v4',
+    signature   : 'falcfit_act_sig_v4',
+    cachedUntil : 'falcfit_cache_until_v4'
   };
 
-  /* App secret used in HMAC-style signature (offline, no network) */
-  var APP_SECRET = 'FALCFIT-2026-OFFLINE-SECRET';
+  /* ─── Offline grace period (ms): 48 hours ───────────────────────── */
+  var GRACE_MS = 48 * 60 * 60 * 1000;
 
-  /* ─── Helpers ────────────────────────────────────────────────────────── */
+  /* ─── SHA-256 helper ─────────────────────────────────────────────── */
   function bufToHex(buf) {
     return Array.from(new Uint8Array(buf))
       .map(function (b) { return ('0' + b.toString(16)).slice(-2); })
       .join('');
   }
-
   function sha256(str) {
     return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str))
       .then(function (buf) { return bufToHex(buf); });
   }
 
+  /* ─── Device ID ──────────────────────────────────────────────────── */
   function getOrCreateInstallId() {
     var id = localStorage.getItem(K.installId);
     if (!id) {
-      id = crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36).slice(2) + Date.now().toString(36));
+      id = (crypto.randomUUID ? crypto.randomUUID()
+           : Math.random().toString(36).slice(2) + Date.now().toString(36));
       localStorage.setItem(K.installId, id);
     }
     return id;
   }
 
-  /* Minimal fingerprint — userAgent + platform + hardwareConcurrency + deviceMemory + maxTouchPoints */
-  function getFingerprint() {
-    var nav = navigator;
-    return [
-      nav.userAgent || '',
-      nav.platform || '',
-      (nav.hardwareConcurrency || 0).toString(),
-      ((nav.deviceMemory) || 0).toString(),
-      (nav.maxTouchPoints || 0).toString()
-    ].join('|');
+  /* ─── Local tamper-proof signature ──────────────────────────────── */
+  function buildSignature(code, installId) {
+    return sha256(code + '|' + installId + '|FALCFIT-GS-2026');
   }
 
-  /* Build expected signature */
-  function buildSignature(code, installId, fingerprintHash) {
-    return sha256(code + '|' + installId + '|' + fingerprintHash + '|' + APP_SECRET);
+  /* ─── Call Google Apps Script ────────────────────────────────────── */
+  function callAPI(action, params, onSuccess, onError) {
+    if (!GAS_URL || GAS_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
+      onError('Activation service not configured. Contact support.');
+      return;
+    }
+    var url = new URL(GAS_URL);
+    url.searchParams.set('action', action);
+    Object.keys(params).forEach(function (k) {
+      url.searchParams.set(k, params[k]);
+    });
+
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timer = controller ? setTimeout(function () { controller.abort(); }, 12000) : null;
+
+    fetch(url.toString(), controller ? { signal: controller.signal } : {})
+      .then(function (resp) {
+        clearTimeout(timer);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        return resp.json();
+      })
+      .then(function (data) { onSuccess(data); })
+      .catch(function (e) {
+        clearTimeout(timer);
+        onError(e);
+      });
   }
 
-  /* ─── Overlay helpers ────────────────────────────────────────────────── */
+  /* ─── Overlay refs ───────────────────────────────────────────────── */
   var ov   = document.getElementById('falcfit-activation-overlay');
   var form = document.getElementById('falcfit-act-form');
   var inp  = document.getElementById('falcfit-act-code');
   var err  = document.getElementById('falcfit-act-error');
   var st   = document.getElementById('falcfit-act-status');
+  var btn  = form ? form.querySelector('button') : null;
 
   document.documentElement.classList.add('falcfit-act-pending');
 
@@ -1057,74 +1071,94 @@ html.falcfit-act-pending body { overflow: hidden; }
     ov.style.display = 'none';
     document.documentElement.classList.remove('falcfit-act-pending');
   }
-
   function showErr(msg) {
     err.textContent = msg;
     err.style.display = 'block';
+    if (btn) { btn.textContent = 'Activate'; btn.disabled = false; }
   }
+  function setStatus(msg) { st.textContent = msg; }
 
-  function setStatus(msg) {
-    st.textContent = msg;
-  }
-
-  /* ─── Verify existing activation ─────────────────────────────────────── */
-  function verifyActivation(installId, fingerprintHash, cb) {
+  /* ─── Verify existing activation ─────────────────────────────────── */
+  function verifyActivation(installId, cb) {
     var storedCode = localStorage.getItem(K.code);
     var storedSig  = localStorage.getItem(K.signature);
+    var cachedUntil = parseInt(localStorage.getItem(K.cachedUntil) || '0', 10);
 
     if (!storedCode || !storedSig) { cb(false); return; }
-    if (VALID_CODES.indexOf(storedCode) === -1) { cb(false); return; }
 
-    buildSignature(storedCode, installId, fingerprintHash).then(function (expectedSig) {
-      cb(expectedSig === storedSig);
+    buildSignature(storedCode, installId).then(function (expectedSig) {
+      if (expectedSig !== storedSig) { cb(false); return; }
+
+      /* Still within offline grace period — allow access */
+      if (Date.now() < cachedUntil) { cb(true); return; }
+
+      /* Grace expired — re-validate online */
+      setStatus('Re-validating license…');
+      callAPI('verify', { code: storedCode, deviceId: installId },
+        function (data) {
+          if (data && data.valid) {
+            localStorage.setItem(K.cachedUntil, (Date.now() + GRACE_MS).toString());
+            cb(true);
+          } else {
+            /* Server says invalid — revoked or transferred */
+            localStorage.removeItem(K.code);
+            localStorage.removeItem(K.signature);
+            localStorage.removeItem(K.cachedUntil);
+            cb(false);
+          }
+        },
+        function () {
+          /* Network error during re-validation: extend grace by 12h */
+          localStorage.setItem(K.cachedUntil, (Date.now() + 12 * 60 * 60 * 1000).toString());
+          cb(true);
+        }
+      );
     });
   }
 
-  /* ─── Activate with code ─────────────────────────────────────────────── */
-  function activateCode(code, installId, fingerprintHash, onSuccess, onError) {
-    if (VALID_CODES.indexOf(code) === -1) {
-      onError('Invalid activation code. Please check and try again.');
-      return;
-    }
-    buildSignature(code, installId, fingerprintHash).then(function (sig) {
-      localStorage.setItem(K.code, code);
-      localStorage.setItem(K.signature, sig);
-      onSuccess();
-    });
+  /* ─── Submit handler ─────────────────────────────────────────────── */
+  function onFormSubmit(e) {
+    e.preventDefault();
+    err.style.display = 'none';
+    var code = (inp.value || '').trim().toUpperCase();
+    if (!code) { showErr('Please enter your activation code.'); return; }
+
+    if (btn) { btn.textContent = 'Checking…'; btn.disabled = true; }
+
+    callAPI('activate', { code: code, deviceId: getOrCreateInstallId() },
+      function (data) {
+        if (data && data.success) {
+          buildSignature(code, getOrCreateInstallId()).then(function (sig) {
+            localStorage.setItem(K.code, code);
+            localStorage.setItem(K.signature, sig);
+            localStorage.setItem(K.cachedUntil, (Date.now() + GRACE_MS).toString());
+            hideOverlay();
+          });
+        } else {
+          showErr((data && data.message) ? data.message : 'Invalid activation code. Please try again.');
+        }
+      },
+      function (e) {
+        var msg = (e && e.name === 'AbortError')
+          ? 'Connection timed out. Check your internet and try again.'
+          : 'Connection error. Check your internet and try again.';
+        showErr(msg);
+      }
+    );
   }
 
-  /* ─── Boot ───────────────────────────────────────────────────────────── */
+  /* ─── Boot ───────────────────────────────────────────────────────── */
   var installId = getOrCreateInstallId();
 
-  sha256(getFingerprint()).then(function (fingerprintHash) {
-    verifyActivation(installId, fingerprintHash, function (valid) {
-      if (valid) {
-        hideOverlay();
-        return;
-      }
-      /* Clear any stale/corrupt data */
-      localStorage.removeItem(K.code);
-      localStorage.removeItem(K.signature);
-
-      /* Show form */
-      setStatus('');
-      form.style.display = 'block';
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        err.style.display = 'none';
-        var code = (inp.value || '').trim().toUpperCase();
-        if (!code) { showErr('Please enter your activation code.'); return; }
-
-        activateCode(
-          code,
-          installId,
-          fingerprintHash,
-          function () { hideOverlay(); },
-          function (msg) { showErr(msg); }
-        );
-      });
-    });
+  verifyActivation(installId, function (valid) {
+    if (valid) {
+      hideOverlay();
+      return;
+    }
+    /* Show form */
+    setStatus('');
+    form.style.display = 'block';
+    form.addEventListener('submit', onFormSubmit);
   });
 
 })();
