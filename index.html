@@ -954,6 +954,203 @@ body {
 .empty-state .empty-icon { font-size: 36px; margin-bottom: 12px; }
 .empty-state .empty-text { font-size: 14px; }
 
+/* ============================================================
+   GUIDED EXPERIENCE SYSTEM — شرح Button
+   ============================================================ */
+.guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,212,0,0.35);
+  background: rgba(255,212,0,0.08);
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.guide-btn:hover {
+  background: rgba(255,212,0,0.18);
+  border-color: rgba(255,212,0,0.6);
+  transform: translateY(-1px);
+}
+.guide-btn .guide-icon { font-size: 14px; }
+
+/* Guide Modal Overlay */
+.guide-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 9000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+}
+.guide-overlay.open { display: flex; }
+
+/* Guide Modal Card */
+.guide-modal {
+  background: #161616;
+  border: 1px solid rgba(255,212,0,0.25);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+  animation: guideSlideIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes guideSlideIn {
+  from { opacity:0; transform: scale(0.93) translateY(16px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+.guide-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: #161616;
+  z-index: 1;
+  border-radius: 16px 16px 0 0;
+}
+.guide-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--gold);
+  font-weight: 700;
+}
+.guide-modal-title .gm-icon {
+  font-size: 20px;
+  width: 36px; height: 36px;
+  background: rgba(255,212,0,0.12);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.guide-close-btn {
+  background: var(--bg-hover);
+  border: 1px solid var(--border-bright);
+  color: var(--text-muted);
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.guide-close-btn:hover { color: var(--text-primary); border-color: var(--border-bright); background: var(--border); }
+
+.guide-modal-body { padding: 20px 24px 24px; }
+
+/* Guide Sections */
+.guide-section {
+  margin-bottom: 20px;
+}
+.guide-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.guide-section-label .gs-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.guide-what {
+  background: rgba(255,212,0,0.06);
+  border: 1px solid rgba(255,212,0,0.15);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Steps list */
+.guide-steps { display: flex; flex-direction: column; gap: 8px; }
+.guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.guide-step-num {
+  width: 22px; height: 22px;
+  background: var(--gold);
+  color: #0a0d12;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Errors list */
+.guide-errors { display: flex; flex-direction: column; gap: 7px; }
+.guide-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid rgba(255,180,0,0.5);
+}
+.guide-error-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+/* Tips list */
+.guide-tips { display: flex; flex-direction: column; gap: 7px; }
+.guide-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 10px 12px;
+  background: rgba(255,212,0,0.04);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid rgba(255,212,0,0.4);
+}
+.guide-tip-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+.guide-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
 /* Activation gate (same localStorage keys as falcfit-app React build) */
 .falcfit-act-overlay {
   position: fixed;
@@ -1269,6 +1466,9 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
       <div class="onboarding-sub">Everything you need. One system. Your control.</div>
       <div style="margin-top:12px;font-size:14px;color:var(--text-secondary);line-height:1.7;">Build your personal fitness system.<br>Track your progress. Stay consistent. Get results.</div>
       <div style="margin-top:10px;font-size:12px;color:var(--gold);opacity:0.75;letter-spacing:1px;font-style:italic;">Train smarter. Stay consistent. Become better.</div>
+      <div style="margin-top:20px;">
+        <button class="guide-btn" onclick="openGuide('onboarding')"><span class="guide-icon">📖</span> شرح</button>
+      </div>
     </div>
 
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
@@ -1489,8 +1689,13 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
   <!-- ===== SECTION: DASHBOARD ===== -->
   <div class="section" id="sec-dashboard">
     <div class="section-header">
-      <div class="section-title" id="dashGreeting">My Progress</div>
-      <div class="section-sub">My training and nutrition summary at a glance</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title" id="dashGreeting">My Progress</div>
+          <div class="section-sub">My training and nutrition summary at a glance</div>
+        </div>
+        <button class="guide-btn" onclick="openGuide('dashboard')"><span class="guide-icon">📖</span> شرح</button>
+      </div>
     </div>
 
     <!-- Stats Row -->
@@ -1584,8 +1789,13 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
   <!-- ===== SECTION: WORKOUT ===== -->
   <div class="section" id="sec-workout">
     <div class="section-header">
-      <div class="section-title">My Workout Plan</div>
-      <div class="section-sub">Log my exercises, sets, reps, and track my performance</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title">My Workout Plan</div>
+          <div class="section-sub">Log my exercises, sets, reps, and track my performance</div>
+        </div>
+        <button class="guide-btn" onclick="openGuide('workout')"><span class="guide-icon">📖</span> شرح</button>
+      </div>
     </div>
 
     <!-- Session Config -->
@@ -1842,8 +2052,13 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
   <!-- ===== SECTION: NUTRITION FACTS ===== -->
   <div class="section" id="sec-nutrition">
     <div class="section-header">
-      <div class="section-title">My Food Database</div>
-      <div class="section-sub" id="nutritionCount">486 food items — search by Arabic name</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title">My Food Database</div>
+          <div class="section-sub" id="nutritionCount">486 food items — search by Arabic name</div>
+        </div>
+        <button class="guide-btn" onclick="openGuide('nutrition')"><span class="guide-icon">📖</span> شرح</button>
+      </div>
     </div>
 
     <!-- Search + Filters -->
@@ -1900,9 +2115,12 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
   <!-- ===== SECTION: MEAL PLANNER ===== -->
   <div class="section" id="sec-planner">
     <div class="section-header">
-      <div>
-        <div class="section-title">My Meal Plan</div>
-        <div class="section-sub">Adaptive nutrition intelligence with day-by-day execution</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title">My Meal Plan</div>
+          <div class="section-sub">Adaptive nutrition intelligence with day-by-day execution</div>
+        </div>
+        <button class="guide-btn" onclick="openGuide('planner')"><span class="guide-icon">📖</span> شرح</button>
       </div>
     </div>
 
@@ -2060,8 +2278,13 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
   <!-- ===== SECTION: COACHING INTEL ===== -->
   <div class="section" id="sec-coaching">
     <div class="section-header">
-      <div class="section-title">My Insights</div>
-      <div class="section-sub">AI-powered recommendations for my progress and decisions</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title">My Insights</div>
+          <div class="section-sub">AI-powered recommendations for my progress and decisions</div>
+        </div>
+        <button class="guide-btn" onclick="openGuide('coaching')"><span class="guide-icon">📖</span> شرح</button>
+      </div>
     </div>
 
     <div id="coachingAlerts" style="margin-bottom:20px;"></div>
@@ -2133,7 +2356,15 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
   </div>
 
   <div class="section" id="sec-rmcalc">
-    <div class="section-header"><div class="section-title">1RM Calculator</div><div class="section-sub">Estimate one-rep max and working set percentages</div></div>
+    <div class="section-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title">1RM Calculator</div>
+          <div class="section-sub">Estimate one-rep max and working set percentages</div>
+        </div>
+        <button class="guide-btn" onclick="openGuide('rmcalc')"><span class="guide-icon">📖</span> شرح</button>
+      </div>
+    </div>
     <div class="card">
       <div class="card-header"><div class="card-title">One Rep Max</div><button class="btn btn-primary btn-sm" onclick="calculateOneRM()">Calculate</button></div>
       <div class="grid-3">
@@ -2165,9 +2396,16 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
     <div class="card"><div class="card-header"><div class="card-title">Mobility Prescription</div></div><div id="mobilityContent"></div></div>
   </div>
 
-
   <div class="section" id="sec-converter">
-    <div class="section-header"><div class="section-title">Converter</div><div class="section-sub">Common coaching unit conversions</div></div>
+    <div class="section-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title">Converter</div>
+          <div class="section-sub">Common coaching unit conversions</div>
+        </div>
+        <button class="guide-btn" onclick="openGuide('converter')"><span class="guide-icon">📖</span> شرح</button>
+      </div>
+    </div>
     <div class="card">
       <div class="card-header"><div class="card-title">Weight/Length Converter</div><button class="btn btn-primary btn-sm" onclick="convertUnits()">Convert</button></div>
       <div class="grid-3">
@@ -2185,6 +2423,22 @@ const COACHING_DATA = {"splits": {"Push": ["(Chest) Barbell Flat Bench Press", "
 <!-- WATERMARK -->
 <div class="watermark-corner">
   Licensed & Developed by<br>FALCFIT
+</div>
+
+<!-- ============================================================
+     GUIDED EXPERIENCE SYSTEM — شرح Modal
+     ============================================================ -->
+<div class="guide-overlay" id="guideOverlay" onclick="closeGuide(event)">
+  <div class="guide-modal" id="guideModal">
+    <div class="guide-modal-header">
+      <div class="guide-modal-title">
+        <div class="gm-icon" id="guideModalIcon">📖</div>
+        <span id="guideModalTitle">دليل الاستخدام</span>
+      </div>
+      <button class="guide-close-btn" onclick="closeGuideModal()">✕</button>
+    </div>
+    <div class="guide-modal-body" id="guideModalBody"></div>
+  </div>
 </div>
 
 <script>
@@ -4198,6 +4452,235 @@ document.addEventListener('DOMContentLoaded', async () => {
   initAdvancedModules();
   startWeeklyPlanBuild();
 });
-</script>
+
+// ============================================================
+// GUIDED EXPERIENCE SYSTEM — شرح
+// ============================================================
+
+const GUIDE_CONTENT = {
+  onboarding: {
+    icon: '👤',
+    title: 'My Profile Setup — دليل الاستخدام',
+    what: 'هذه الصفحة هي نقطة البداية في النظام. هنا تُدخل بياناتك الشخصية حتى يتمكن النظام من حساب السعرات والماكروز وتخصيص خطتك بدقة.',
+    steps: [
+      'أدخل اسمك وعمرك ووزنك وطولك في الخطوة الأولى.',
+      'في الخطوة الثانية، حدد هدفك (زيادة عضلات / حرق دهون)، مستوى نشاطك، وخبرتك.',
+      'في الخطوة الثالثة، اختر نوع التقسيم التدريبي وعدد أيام التمرين ووجباتك اليومية.',
+      'في الخطوة الرابعة، راجع ملخص بياناتك ثم اضغط "Save My Profile & Start".',
+    ],
+    errors: [
+      'لا تترك حقل الوزن أو الطول فارغاً — النظام يحتاجهما لحساب السعرات.',
+      'لا تختار مستوى نشاط أعلى من الواقع؛ هذا يؤثر على دقة حساب السعرات.',
+      'إذا غيّرت بياناتك، اضغط Save مجدداً لتحديث النظام.',
+    ],
+    tips: [
+      'أدخل وزنك الحالي الفعلي وليس وزنك المستهدف — هذا يجعل الحسابات أدق.',
+      'يمكنك العودة لتعديل ملفك الشخصي في أي وقت من صفحة "My Progress".',
+      'كلما كانت بياناتك أدق، كانت التوصيات والتنبيهات التلقائية أكثر فائدة.',
+    ]
+  },
+  dashboard: {
+    icon: '📊',
+    title: 'My Progress — دليل الاستخدام',
+    what: 'هذه الصفحة هي مركز متابعة تقدمك. تعرض ملخصاً شاملاً لحجم التمرين، السعرات المستهدفة، الجدول الأسبوعي، وتنبيهات الكوتش التلقائية.',
+    steps: [
+      'أكمل إعداد ملفك الشخصي أولاً حتى تظهر البيانات هنا.',
+      'راقب الأرقام الأربعة في الأعلى: Sets اليوم، Sets الأسبوع، Sets الشهر، هدف السعرات.',
+      'استخدم "Weekly Schedule" لمعرفة أيام التمرين والراحة في أسبوعك.',
+      'راجع "Coaching Alerts" لأي تنبيهات تلقائية تخص تقدمك.',
+      'اضغط "Edit" في قسم My Profile لتعديل بياناتك مباشرة.',
+    ],
+    errors: [
+      'إذا ظهرت كل الأرقام صفراً، فهذا يعني أنك لم تُدخل بياناتك أو لم تسجّل جلسات بعد.',
+      'لا تعتمد على الصفحة الرئيسية فقط — سجّل جلساتك أولاً في "My Weekly Workout Days".',
+    ],
+    tips: [
+      'ارجع لهذه الصفحة يومياً لمراقبة التقدم وقراءة تنبيهات الكوتش.',
+      'ربط صفحة My Progress بصفحة My Profile يعطيك رؤية متكاملة لمسارك.',
+      '"Adaptive Decision Center" يُقدم توصيات ذكية بناءً على حالتك الحالية — اقرأها بانتظام.',
+    ]
+  },
+  workout: {
+    icon: '🏋️',
+    title: 'My Weekly Workout Days — دليل الاستخدام',
+    what: 'هنا تسجّل جلسات تمرينك اليومية، تضيف التمارين مع الأوزان والتكرارات والسيتات، وتراقب حجم التدريب الأسبوعي.',
+    steps: [
+      'اختر اليوم (Day 1 – Day 7) من القائمة العلوية.',
+      'اختر نوع التقسيم (Split) المناسب ليومك كـ Push / Pull / Legs.',
+      'اضغط "+ Add Exercise" لإضافة تمرين جديد.',
+      'لكل تمرين: أدخل اسم التمرين، عدد السيتات، التكرارات، الوزن، وتقييم RPE.',
+      'بعد اكتمال التمرين، اضغط "Save Session" لحفظ الجلسة.',
+    ],
+    errors: [
+      'لا تنسَ تغيير اليوم قبل حفظ الجلسة — كل يوم يُحفظ بشكل مستقل.',
+      'لا تترك حقول الوزن أو التكرارات فارغة لأن ذلك يؤثر على حسابات الحجم التدريبي.',
+      'لا تحفظ الجلسة مرتين ليوم واحد إلا إذا كانت جلستين فعلاً منفصلتين.',
+    ],
+    tips: [
+      'استخدم RPE (1-10) لتقييم صعوبة التمرين — يساعدك على تتبع التحسن مع الوقت.',
+      'سجّل جلساتك فور الانتهاء من التمرين حتى لا تنسى التفاصيل.',
+      'تقسيم Push/Pull/Legs هو الأنسب لمعظم المستويات — ابدأ به إذا لم تكن متأكداً.',
+    ]
+  },
+  nutrition: {
+    icon: '🔍',
+    title: 'My Food Database — دليل الاستخدام',
+    what: 'قاعدة بيانات تحتوي على أكثر من 486 صنف غذائي مع القيم الغذائية الكاملة لكل 100 جرام. استخدمها للبحث عن أي طعام وقراءة قيمه الغذائية بدقة.',
+    steps: [
+      'اكتب اسم الطعام في خانة البحث (بالعربية أو الإنجليزية).',
+      'استخدم الفلاتر لتصفية النتائج: High Protein، Low Fat، Low Carb، وغيرها.',
+      'اضغط على أي صف في الجدول لرؤية التفاصيل الكاملة للطعام.',
+      'استخدم زر "Add to Plan" لإضافة الطعام مباشرة لخطة الأكل.',
+    ],
+    errors: [
+      'القيم المعروضة هي لكل 100 جرام — احسب الكمية التي تأكلها فعلاً.',
+      'الفلترة بـ "High Protein" تعني >20g لكل 100g — تأكد من الكمية الفعلية.',
+    ],
+    tips: [
+      'استخدم فلتر "High Protein + Low Fat" للعثور على أفضل مصادر البروتين للكاتينج.',
+      'ابحث بالاسم العربي للحصول على نتائج أدق للأطعمة المحلية.',
+      'يمكنك مقارنة طعامين بفتح تفاصيل كل منهما على التوالي.',
+    ]
+  },
+  planner: {
+    icon: '🥗',
+    title: 'My Meal Plan — دليل الاستخدام',
+    what: 'هنا تبني خطة وجباتك الأسبوعية (7 أيام) بناءً على هدفك وسعراتك. النظام يُولّد لك خطة أكل كاملة تلقائياً.',
+    steps: [
+      'أدخل وزنك وطولك في الحقول العلوية (أو يُملأ تلقائياً من ملفك).',
+      'اختر هدفك: Fat Loss / Muscle Gain / Recomposition / Maintenance.',
+      'حدد عدد الوجبات اليومية التي تناسب نظامك.',
+      'اضغط "Build My Plan" لتوليد خطة الأكل الأسبوعية.',
+      'راجع كل يوم وتحقق من توزيع الماكروز (Protein / Carbs / Fat).',
+    ],
+    errors: [
+      'إذا لم تظهر نتائج، تأكد أن الوزن والطول مُدخلان بشكل صحيح.',
+      'لا تضع هدف سعرات مخصصاً إلا إذا كنت تعرف هدفك بدقة — اتركه فارغاً للحساب التلقائي.',
+      'لا تغير اليوم من القائمة قبل مراجعة خطة اليوم الحالي.',
+    ],
+    tips: [
+      'خطة "Aggressive Fat Loss" مناسبة فقط للفترات القصيرة (2-4 أسابيع).',
+      '"Peak Week Mode" مخصص لفترة ما قبل المسابقة — لا تستخدمه بشكل روتيني.',
+      'جرب تغيير عدد الوجبات لترى كيف يتوزع الماكرو على مدار اليوم.',
+    ]
+  },
+  rmcalc: {
+    icon: '🏋️‍♂️',
+    title: '1RM Calculator — دليل الاستخدام',
+    what: 'حاسبة أقصى تكرار لمرة واحدة (One Rep Max). تُساعدك على تحديد أوزان العمل المناسبة بناءً على النسب المئوية.',
+    steps: [
+      'أدخل الوزن الذي رفعته في "Working Weight".',
+      'أدخل عدد التكرارات التي أنجزتها (يجب أن تكون بين 1 و15).',
+      'اختر المعادلة: Epley (الأكثر شيوعاً) أو Brzycki.',
+      'اضغط "Calculate" لرؤية تقدير 1RM والنسب المئوية.',
+    ],
+    errors: [
+      'إذا كان عدد التكرارات أكثر من 15، النتيجة ستكون غير دقيقة — استخدم فقط 1-15 تكرار.',
+      'هذه تقديرات — الرقم الفعلي قد يختلف بناءً على حالتك في يوم الاختبار.',
+    ],
+    tips: [
+      'الأدق نتائجاً: استخدم وزناً تُنجز معه بين 3 و6 تكرارات.',
+      'استخدم النسبة 80% من الـ 1RM كنقطة بداية لتمارين الحجم (8-12 تكرار).',
+      'راجع حاسبة الـ 1RM كل 4 أسابيع لقياس تقدمك في القوة.',
+    ]
+  },
+  converter: {
+    icon: '🔁',
+    title: 'Converter — دليل الاستخدام',
+    what: 'أداة تحويل سريعة للوحدات الشائعة في التدريب والتغذية: كيلوجرام ↔ باوند، سنتيمتر ↔ بوصة.',
+    steps: [
+      'أدخل القيمة التي تريد تحويلها في حقل "Value".',
+      'اختر وحدة المصدر من قائمة "From".',
+      'اختر وحدة الهدف من قائمة "To".',
+      'اضغط "Convert" لرؤية النتيجة.',
+    ],
+    errors: [
+      'تأكد من اختيار وحدتين مختلفتين — تحويل kg إلى kg لا معنى له.',
+      'لا تخلط بين وحدات الوزن (kg/lb) ووحدات الطول (cm/in).',
+    ],
+    tips: [
+      '1 kg = 2.205 lb — احفظ هذا الرقم كمرجع سريع.',
+      'معظم الأوزان في الصالات الأمريكية بالـ lb — استخدم المحوّل لتحديد وزن عملك.',
+    ]
+  },
+  coaching: {
+    icon: '🧠',
+    title: 'My Insights — دليل الاستخدام',
+    what: 'صفحة التحليل الذكي لتقدمك. النظام يحلل بياناتك ويُقدم توصيات مخصصة في التدريب، التغذية، والتعافي.',
+    steps: [
+      'أكمل إعداد ملفك الشخصي وسجّل على الأقل جلسة تمرين واحدة و Check-in واحد.',
+      'راجع "Progression Analysis" لمعرفة ما إذا كنت تتقدم كما ينبغي.',
+      'اقرأ "Volume Recommendations" لمعرفة هل حجم تمرينك مناسب أم لا.',
+      'تحقق من "Nutrition Intelligence" للحصول على توصيات غذائية ذكية.',
+      'اتبع خطوات "Next Steps" لمعرفة ما يجب فعله في المرحلة القادمة.',
+    ],
+    errors: [
+      'إذا ظهرت التوصيات فارغة، فهذا لأن النظام يحتاج بيانات كافية — سجّل جلسات وCheck-ins أولاً.',
+      'لا تطبّق كل التوصيات دفعة واحدة — ركّز على النقطة الأهم أولاً.',
+    ],
+    tips: [
+      'راجع هذه الصفحة مرة في الأسبوع كـ "جلسة مراجعة" مع نفسك.',
+      'التوصيات تتغير تلقائياً مع تحديث بياناتك — كلما سجّلت أكثر، كانت التوصيات أدق.',
+    ]
+  }
+};
+
+function openGuide(pageKey) {
+  const data = GUIDE_CONTENT[pageKey];
+  if (!data) return;
+
+  document.getElementById('guideModalIcon').textContent = data.icon;
+  document.getElementById('guideModalTitle').textContent = data.title;
+
+  const stepsHTML = data.steps.map((s, i) =>
+    `<div class="guide-step"><div class="guide-step-num">${i + 1}</div><div>${s}</div></div>`
+  ).join('');
+
+  const errorsHTML = data.errors.map(e =>
+    `<div class="guide-error"><div class="guide-error-icon">⚠️</div><div>${e}</div></div>`
+  ).join('');
+
+  const tipsHTML = data.tips.map(t =>
+    `<div class="guide-tip"><div class="guide-tip-icon">💡</div><div>${t}</div></div>`
+  ).join('');
+
+  document.getElementById('guideModalBody').innerHTML = `
+    <div class="guide-section">
+      <div class="guide-section-label"><div class="gs-dot"></div>ماذا تفعل هذه الصفحة؟</div>
+      <div class="guide-what">${data.what}</div>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-section">
+      <div class="guide-section-label"><div class="gs-dot"></div>خطوات الاستخدام</div>
+      <div class="guide-steps">${stepsHTML}</div>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-section">
+      <div class="guide-section-label"><div class="gs-dot"></div>أخطاء شائعة</div>
+      <div class="guide-errors">${errorsHTML}</div>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-section">
+      <div class="guide-section-label"><div class="gs-dot"></div>نصائح احترافية</div>
+      <div class="guide-tips">${tipsHTML}</div>
+    </div>
+  `;
+
+  document.getElementById('guideOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGuideModal() {
+  document.getElementById('guideOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeGuide(e) {
+  if (e.target === document.getElementById('guideOverlay')) closeGuideModal();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeGuideModal();
+});
 </body>
 </html>
